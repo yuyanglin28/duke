@@ -82,12 +82,15 @@ public class Duke {
                     System.out.println("Nice! I've marked this task as done:");
                     taskList[index - 1].changeStatusIcon();
                     System.out.println("  " + taskList[index - 1]);
-                } else if (command.equals("todo")) {
+                }
+
+                else if (command.equals("todo")) {
                     try {
                         String content = input.nextLine();
                         validateInput(content);
                         taskList[i] = new Todo(content);
                         outputTask(i);
+                        i++;
 
                     } catch (DukeException e) {
                         System.out.println("OOPS!!! The description of a todo cannot be empty.");
@@ -105,6 +108,7 @@ public class Duke {
                         }
                     }
                     outputTask(i);
+                    i++;
                 } else if (command.equals("event")) {
                     String content = input.nextLine();
                     String d, t;
@@ -117,6 +121,7 @@ public class Duke {
                         }
                     }
                     outputTask(i);
+                    i++;
 
                 } else {
                     valid = false;
