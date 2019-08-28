@@ -11,6 +11,14 @@ public class Task {
         return (isDone ? "\u2713" : "\u2718"); //return tick or X symbols
     }
 
+
     //...
+    public void changeStatusIcon(){
+        if (this.isDone == false){
+            this.isDone = true;
+        }
+
+    }
+
 }
 
