@@ -13,11 +13,11 @@ public class Duke {
         Scanner input = new Scanner(System.in);
         while(true){
             String command = input.nextLine();
-            if (command == "list"){
+            if (command.equals("list") ){
                 System.out.print(line+"list\n"+line);
-            }else if (command == "blah"){
+            }else if (command.equals("blah")){
                 System.out.print(line+"blah\n"+line);
-            }else if (command == "bye"){
+            }else if (command.equals("bye")){
                 System.out.print(line+"Bye. Hope to see you again soon!\n"+line);
                 System.exit(0);
             }else{
