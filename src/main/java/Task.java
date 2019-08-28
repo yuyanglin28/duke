@@ -12,12 +12,18 @@ public class Task {
     }
 
 
-    //...
     public void changeStatusIcon(){
         if (this.isDone == false){
             this.isDone = true;
         }
+    }
 
+    public String getDescription(){
+        return this.description;
+    }
+
+    public String toString(){
+        return "["+getStatusIcon()+"]"+ getDescription();
     }
 
 }
