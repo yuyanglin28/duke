@@ -1,10 +1,11 @@
+import java.io.*;
 import java.util.Scanner;
 
 public class Duke {
     static Task[] taskList = new Task[100];
     static int i = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
         String line = "_______________________________________\n";
 
@@ -12,6 +13,52 @@ public class Duke {
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
         System.out.print(line);
+
+
+        Scanner inFile = new Scanner(new FileReader("/Users/linyy/Desktop/duke/src/main/java/data/duke.txt"));
+        while(inFile.hasNext()){
+            String type = inFile.next();
+            String useless = inFile.next();
+            String status = inFile.next();
+            useless = inFile.next();
+            String content = inFile.nextLine();
+
+            if (type.equals("T") ){
+                taskList[i] = new Todo(content);
+                if (status.equals("1"))
+                    taskList[i].changeStatusIcon();
+                i++;
+            }else if (type.equals("D")){
+                String d, t;
+                for (int k = 0; k < content.length(); k++) {
+                    if (content.charAt(k) == '|') {
+                        d = content.substring(0, k - 1);
+                        t = content.substring(k + 2);
+                        taskList[i] = new Deadline(d, t);
+                        if (status.equals("1"))
+                            taskList[i].changeStatusIcon();
+                        i++;
+                        break;
+                    }
+                }
+
+            }else if (type.equals("E")){
+                String d, t;
+                for (int k = 0; k < content.length(); k++) {
+                    if (content.charAt(k) == '|') {
+                        d = content.substring(0, k - 1);
+                        t = content.substring(k + 2);
+                        taskList[i] = new Event(d, t);
+                        if (status.equals("1"))
+                            taskList[i].changeStatusIcon();
+                        i++;
+                        break;
+                    }
+                }
+            }
+        }
+
+
 
         Scanner input = new Scanner(System.in);
         boolean valid;
@@ -70,7 +117,7 @@ public class Duke {
                         }
                     }
                     outputTask(i);
-                    
+
                 } else {
                     valid = false;
                 }
