@@ -1,8 +1,10 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
-    static Task[] taskList = new Task[100];
+    //static Task[] taskList = new Task[100];
+    static ArrayList<Task> taskList = new ArrayList<Task>();
     static int i = 0;
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -24,9 +26,9 @@ public class Duke {
             String content = inFile.nextLine();
 
             if (type.equals("T") ){
-                taskList[i] = new Todo(content);
+                taskList.add(new Todo(content));
                 if (status.equals("1"))
-                    taskList[i].changeStatusIcon();
+                    taskList.get(i).changeStatusIcon();
                 i++;
             }else if (type.equals("D")){
                 String d, t;
@@ -34,9 +36,9 @@ public class Duke {
                     if (content.charAt(k) == '|') {
                         d = content.substring(0, k - 1);
                         t = content.substring(k + 2);
-                        taskList[i] = new Deadline(d, t);
+                        taskList.add(new Deadline(d, t));
                         if (status.equals("1"))
-                            taskList[i].changeStatusIcon();
+                            taskList.get(i).changeStatusIcon();
                         i++;
                         break;
                     }
@@ -48,9 +50,9 @@ public class Duke {
                     if (content.charAt(k) == '|') {
                         d = content.substring(0, k - 1);
                         t = content.substring(k + 2);
-                        taskList[i] = new Event(d, t);
+                        taskList.add(new Event(d, t));
                         if (status.equals("1"))
-                            taskList[i].changeStatusIcon();
+                            taskList.get(i).changeStatusIcon();
                         i++;
                         break;
                     }
@@ -71,8 +73,8 @@ public class Duke {
             try {
                 if (command.equals("list")) {
                     System.out.println("Here are the tasks in your list:");
-                    for (int j = 0; j < i; j++) {
-                        System.out.println(j + 1 + "." + taskList[j]);
+                    for (int j = 0; j < taskList.size(); j++) {
+                        System.out.println(j + 1 + "." + taskList.get(j));
                     }
                 } else if (command.equals("bye")) {
                     System.out.println("Bye. Hope to see you again soon!");
@@ -80,15 +82,15 @@ public class Duke {
                 } else if (command.equals("done")) {
                     int index = input.nextInt();
                     System.out.println("Nice! I've marked this task as done:");
-                    taskList[index - 1].changeStatusIcon();
-                    System.out.println("  " + taskList[index - 1]);
+                    taskList.get(index - 1).changeStatusIcon();
+                    System.out.println("  " + taskList.get(index - 1));
                 }
 
                 else if (command.equals("todo")) {
                     try {
                         String content = input.nextLine();
                         validateInput(content);
-                        taskList[i] = new Todo(content);
+                        taskList.add(new Todo(content));
                         outputTask(i);
                         i++;
 
@@ -103,7 +105,7 @@ public class Duke {
                         if (content.charAt(k) == '/') {
                             d = content.substring(0, k - 1);
                             t = content.substring(k + 4);
-                            taskList[i] = new Deadline(d, t);
+                            taskList.add(new Deadline(d, t));
                             break;
                         }
                     }
@@ -116,7 +118,7 @@ public class Duke {
                         if (content.charAt(k) == '/') {
                             d = content.substring(0, k - 1);
                             t = content.substring(k + 4);
-                            taskList[i] = new Event(d, t);
+                            taskList.add(new Event(d, t));
                             break;
                         }
                     }
@@ -138,7 +140,7 @@ public class Duke {
 
     public static void outputTask(int i) {
         System.out.println("Got it. I've added this task:");
-        System.out.println("  " + taskList[i]);
+        System.out.println("  " + taskList.get(i));
         i++;
         System.out.println("Now you have " + i + " tasks in the list.");
     }
