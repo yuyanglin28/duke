@@ -131,10 +131,22 @@ public class Duke {
                     taskList.remove(index-1);
                     System.out.println("Now you have " + taskList.size() + " tasks in the list.");
                 }
+                else if (command.equals("find")){
+                    String key = input.next();
+                    System.out.println("Here are the matching tasks in your list:");
+                    int k = 1;
+                    for (int j = 0; j<taskList.size(); j++){
+                        if (taskList.get(j).getDescription().contains(key)){
+                            System.out.println(k+"."+taskList.get(j));
+                            k++;
+                        }
+                    }
+                }
 
                 else {
                     valid = false;
                 }
+
 
                 validateCommand(valid);
             } catch (DukeException e) {
