@@ -123,7 +123,21 @@ public class Duke {
                     outputTask(i);
                     i++;
 
-                } else {
+                }
+
+                else if (command.equals("find")){
+                    String key = input.next();
+                    System.out.println("Here are the matching tasks in your list:");
+                    int k = 1;
+                    for (int j = 0; j<i; j++){
+                        if (taskList[j].getDescription().contains(key)){
+                            System.out.println(k+"."+taskList[j]);
+                            k++;
+                        }
+                    }
+                }
+
+                else {
                     valid = false;
                 }
 
