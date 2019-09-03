@@ -1,0 +1,18 @@
+_______________________________________
+Hello! I'm Duke
+What can I do for you?
+_______________________________________
+_______________________________________
+Here are the tasks in your list:
+1.[T][✓] read book
+2.[D][✘] return book (by: June 6th)
+3.[E][✘] project meeting (at: Aug 6th 2-4pm)
+4.[T][✓] join sports club
+_______________________________________
+_______________________________________
+Noted. I've removed this task:
+  [E][✘] project meeting (at: Aug 6th 2-4pm)
+Now you have 3 tasks in the list.
+_______________________________________
+_______________________________________
+Bye. Hope to see you again soon!
