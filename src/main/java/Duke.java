@@ -3,177 +3,49 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
-    //static Task[] taskList = new Task[100];
-    static ArrayList<Task> taskList;
-
-    public static void main(String[] args) throws FileNotFoundException {
-
-        String line = "_______________________________________\n";
-
-        System.out.print(line);
-        System.out.println("Hello! I'm Duke");
-        System.out.println("What can I do for you?");
-        System.out.print(line);
 
 
-        Scanner inFile = new Scanner(new FileReader("/Users/linyy/Desktop/duke/src/main/java/data/duke.txt"));
-        taskList = new ArrayList<Task>();
-        while(inFile.hasNext()){
-            String type = inFile.next();
-            String useless = inFile.next();
-            String status = inFile.next();
-            useless = inFile.next();
-            String content = inFile.nextLine();
+    //Storage: deals with loading tasks from the file and saving tasks in the file
+    //Parser: deals with making sense of the user command
+    //TaskList: contains the task list e.g., it has operations to add/delete tasks in the list
 
-            if (type.equals("T") ){
-                taskList.add(new Todo(content));
-                if (status.equals("1"))
-                    taskList.get(taskList.size()-1).changeStatusIcon();
-            }else if (type.equals("D")){
-                String d, t;
-                for (int k = 0; k < content.length(); k++) {
-                    if (content.charAt(k) == '|') {
-                        d = content.substring(0, k - 1);
-                        t = content.substring(k + 2);
-                        taskList.add(new Deadline(d, t));
-                        if (status.equals("1"))
-                            taskList.get(taskList.size()-1).changeStatusIcon();
-                        break;
-                    }
-                }
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
 
-            }else if (type.equals("E")){
-                String d, t;
-                for (int k = 0; k < content.length(); k++) {
-                    if (content.charAt(k) == '|') {
-                        d = content.substring(0, k - 1);
-                        t = content.substring(k + 2);
-                        taskList.add(new Event(d, t));
-                        if (status.equals("1"))
-                            taskList.get(taskList.size()-1).changeStatusIcon();
-                        break;
-                    }
-                }
-            }
+    public Duke(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
+        try {
+            tasks = new TaskList(storage.load());
+        } catch (DukeException e) {
+            ui.showLoadingError();
+            tasks = new TaskList();
         }
+    }
 
-
-
-        Scanner input = new Scanner(System.in);
-        boolean valid;
-
-        while (true) {
-            String command = input.next();
-            System.out.print(line);
-            valid = true;
-
+    public void run() {
+        ui.showWelcome();
+        boolean isExit = false;
+        while (!isExit) {
             try {
-                if (command.equals("list")) {
-                    System.out.println("Here are the tasks in your list:");
-                    for (int j = 0; j < taskList.size(); j++) {
-                        System.out.println(j + 1 + "." + taskList.get(j));
-                    }
-                } else if (command.equals("bye")) {
-                    System.out.println("Bye. Hope to see you again soon!");
-                    System.exit(0);
-                }
-
-                else if (command.equals("done")) {
-                    int index = input.nextInt();
-                    System.out.println("Nice! I've marked this task as done:");
-                    taskList.get(index - 1).changeStatusIcon();
-                    System.out.println("  " + taskList.get(index - 1));
-                }
-
-                else if (command.equals("todo")) {
-                    try {
-                        String content = input.nextLine();
-                        validateInput(content);
-                        taskList.add(new Todo(content));
-                        outputTask(taskList.size()-1);
-
-
-                    } catch (DukeException e) {
-                        System.out.println("OOPS!!! The description of a todo cannot be empty.");
-                    }
-
-                } else if (command.equals("deadline")) {
-                    String content = input.nextLine();
-                    String d, t;
-                    for (int k = 0; k < content.length(); k++) {
-                        if (content.charAt(k) == '/') {
-                            d = content.substring(0, k - 1);
-                            t = content.substring(k + 4);
-                            taskList.add(new Deadline(d, t));
-                            break;
-                        }
-                    }
-                    outputTask(taskList.size()-1);
-                } else if (command.equals("event")) {
-                    String content = input.nextLine();
-                    String d, t;
-                    for (int k = 0; k < content.length(); k++) {
-                        if (content.charAt(k) == '/') {
-                            d = content.substring(0, k - 1);
-                            t = content.substring(k + 4);
-                            taskList.add(new Event(d, t));
-                            break;
-                        }
-                    }
-                    outputTask(taskList.size()-1);
-
-                }
-
-                else if (command.equals("delete")){
-                    int index = input.nextInt();
-                    System.out.println("Noted. I've removed this task:");
-                    System.out.println("  " + taskList.get(index - 1));
-                    taskList.remove(index-1);
-                    System.out.println("Now you have " + taskList.size() + " tasks in the list.");
-                }
-                else if (command.equals("find")){
-                    String key = input.next();
-                    System.out.println("Here are the matching tasks in your list:");
-                    int k = 1;
-                    for (int j = 0; j<taskList.size(); j++){
-                        if (taskList.get(j).getDescription().contains(key)){
-                            System.out.println(k+"."+taskList.get(j));
-                            k++;
-                        }
-                    }
-                }
-
-                else {
-                    valid = false;
-                }
-
-
-                validateCommand(valid);
+                String fullCommand = ui.readCommand();
+                ui.showLine();
+                Command c = Parser.parse(fullCommand);
+                c.execute(tasks, ui, storage);
+                isExit = c.isExit();
             } catch (DukeException e) {
-                System.out.println("OOPS!!! I'm sorry, bybut I don't know what that means :-(");
+                ui.showError(e.getMessage());
+            } finally {
+                ui.showLine();
             }
-
-            System.out.print(line);
         }
     }
 
-    public static void outputTask(int i) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  " + taskList.get(i));
-        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+    public static void main(String[] args) {
+        new Duke("/Users/linyy/Desktop/duke/src/main/java/data/duke.txt").run();
     }
-
-    public static void validateInput(String s) throws DukeException {
-        if (s.equals(""))
-            throw new DukeException("The description of this command cannot be empty.");
-    }
-
-    public static void validateCommand(boolean valid) throws DukeException {
-        if (valid == false)
-            throw new DukeException("The command is not valid");
-    }
-
-
 }
 
-
+//TODO: invalid index for delete and done
+//TODO: enhance the format of the list
