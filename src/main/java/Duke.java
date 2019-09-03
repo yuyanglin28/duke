@@ -123,13 +123,22 @@ public class Duke {
                     outputTask(taskList.size()-1);
 
                 }
+
+                else if (command.equals("delete")){
+                    int index = input.nextInt();
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println("  " + taskList.get(index - 1));
+                    taskList.remove(index-1);
+                    System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                }
+
                 else {
                     valid = false;
                 }
 
                 validateCommand(valid);
             } catch (DukeException e) {
-                System.out.println("OOPS!!! I'm sorry, but I don't know what that means :-(");
+                System.out.println("OOPS!!! I'm sorry, bybut I don't know what that means :-(");
             }
 
             System.out.print(line);
@@ -139,8 +148,7 @@ public class Duke {
     public static void outputTask(int i) {
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + taskList.get(i));
-        i++;
-        System.out.println("Now you have " + i + " tasks in the list.");
+        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
     }
 
     public static void validateInput(String s) throws DukeException {
