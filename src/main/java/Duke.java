@@ -1,3 +1,9 @@
+/**
+ * this is a Duke class
+ * @author Lin Yuyang
+ * @version 2019.09.09
+ */
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
