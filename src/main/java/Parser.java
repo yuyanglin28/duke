@@ -26,9 +26,10 @@ public class Parser {
         else if (commands[0].equals("todo")) {
             String content = "";
             if (commands.length > 1){
-                for (int i=1; i<commands.length; i++){
-                    content = content + " " + commands[i];
+                for (int i=1; i<commands.length - 1; i++){
+                    content = content + commands[i] + " ";
                 }
+                content += commands[commands.length -1 ];
             }else{
                 throw new DukeException("The description of todo command cannot be empty.");
             }
@@ -39,16 +40,17 @@ public class Parser {
             String time = "";
 
             if (commands[1] != null) {
-                for (int i=1; i<commands.length; i++){
-                    if (commands[i].equals("/by")){
-                        if (commands.length>i+1){
-                            for (int j=i+1; j<commands.length; j++)
-                                time += commands[j];
-                        }
-                        break;
-                    }
-                    content += commands[i];
+                int i = 1;
+                while (commands.length > i+1 && (! commands[i + 1].equals("/by"))){
+                    content = content + commands[i] + " ";
+                    i += 1;
                 }
+                content += commands[i];
+                if (commands.length > i+2){
+                    for (int j = i+2; j<commands.length-1; j++)
+                        time = time + commands[j] + " ";
+                }
+                time += commands[commands.length - 1];
             }
             if (content == ""){
                 throw new DukeException("The description of deadline command cannot be empty.");
@@ -65,17 +67,19 @@ public class Parser {
             String time = "";
 
             if (commands[1] != null) {
-                for (int i=1; i<commands.length; i++){
-                    if (commands[i].equals("/at")){
-                        if (commands.length>i+1){
-                            for (int j=i+1; j<commands.length; j++)
-                                time += commands[j];
-                        }
-                        break;
-                    }
-                    content += commands[i];
+                int i = 1;
+                while (commands.length > i+1 && (! commands[i + 1].equals("/at"))){
+                    content = content + commands[i] + " ";
+                    i += 1;
                 }
+                content += commands[i];
+                if (commands.length > i+2){
+                    for (int j = i+2; j<commands.length-1; j++)
+                        time = time + commands[j] + " ";
+                }
+                time += commands[commands.length - 1];
             }
+
             if (content == ""){
                 throw new DukeException("The description of event command cannot be empty.");
             }

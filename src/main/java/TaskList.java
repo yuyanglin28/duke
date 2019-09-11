@@ -12,51 +12,54 @@ public class TaskList {
 
     public TaskList(Scanner inFile) throws DukeException{
 
+        System.out.println("lala");
+
         taskList = new ArrayList<Task>();
         while(inFile.hasNext()){
-            String type = inFile.next();
-            String useless = inFile.next();
-            String status = inFile.next();
-            useless = inFile.next();
-            String content = inFile.nextLine();
+            String message = inFile.nextLine();
+            System.out.println(message);
+            String[] ss = message.split("\\s");
+            String type = ss[0];
+            String status = ss[2];
 
             if (type.equals("T") ){
+                String content = "";
+                for (int i = 4; i<ss.length - 1; i++){
+                    content = content + ss[i] + " ";
+                }
+                content = content + ss[ss.length - 1];
                 taskList.add(new Todo(content));
-                if (status.equals("1"))
-                    taskList.get(taskList.size()-1).changeStatusIcon();
-            }else if (type.equals("D")){
-                String d, t;
-                for (int k = 0; k < content.length(); k++) {
-                    if (content.charAt(k) == '|') {
-                        d = content.substring(0, k - 1);
-                        t = content.substring(k + 2);
-                        taskList.add(new Deadline(d, t));
-                        if (status.equals("1"))
-                            taskList.get(taskList.size()-1).changeStatusIcon();
-                        break;
-                    }
-                }
 
-            }else if (type.equals("E")){
-                String d, t;
-                for (int k = 0; k < content.length(); k++) {
-                    if (content.charAt(k) == '|') {
-                        d = content.substring(0, k - 1);
-                        t = content.substring(k + 2);
-                        taskList.add(new Event(d, t));
-                        if (status.equals("1"))
-                            taskList.get(taskList.size()-1).changeStatusIcon();
-                        break;
-                    }
+            }else if (type.equals("D") || type.equals("E")){
+                String d = "";
+                String t = "";
+                int i = 4;
+                while (! ss[i+1].equals("|")){
+                    d = d + ss[i] + " ";
+                    i += 1;
                 }
+                d = d + ss[i];
+                for (int j = i+2; j<ss.length-1; j++){
+                        t = t + ss[j] + " ";
+                }
+                t = t + ss[ss.length - 1];
+
+                if (type.equals("D"))
+                    taskList.add(new Deadline(d, t));
+                else
+                    taskList.add(new Event(d, t));
+
             }else{
+                System.out.println("hhhhhhhhh");
                 throw new DukeException("Fail to read the content of the file.");
             }
+            if (status.equals("1"))
+                taskList.get(taskList.size()-1).changeStatusIcon();
+
+
         }
 
         inFile.close();
-
-
 
 
     }
