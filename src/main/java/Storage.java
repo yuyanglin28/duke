@@ -15,7 +15,9 @@ public class Storage {
             Scanner inFile = new Scanner(new FileReader(filePath));
             return inFile;
         }catch (FileNotFoundException e){
+            System.out.println(e.getMessage());
             throw new DukeException("Fail to load the file.");
+           //
         }
     }
 

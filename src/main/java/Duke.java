@@ -4,10 +4,6 @@
  * @version 2019.09.09
  */
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Duke {
 
 
@@ -49,6 +45,6 @@ public class Duke {
     }
 
     public static void main(String[] args) {
-        new Duke("/Users/linyy/Desktop/duke/src/main/java/data/duke.txt").run();
+        new Duke("./src/main/data/duke.txt").run();
     }
 }
