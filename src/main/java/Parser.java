@@ -106,7 +106,7 @@ public class Parser {
         }
 
         else {
-            throw new DukeException("OOPS!!! I'm sorry, bybut I don't know what that means :-(");
+            throw new DukeException("OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
     }
 }

@@ -22,6 +22,10 @@ public class Task {
         return this.description;
     }
 
+    public int getStatus(){
+        if (isDone) return 1;
+    else return 0;}
+
     public String toString(){
         return "["+getStatusIcon()+"]"+ getDescription();
     }

@@ -52,6 +52,3 @@ public class Duke {
         new Duke("/Users/linyy/Desktop/duke/src/main/java/data/duke.txt").run();
     }
 }
-
-//TODO: invalid index for delete and done
-//TODO: enhance the format of the list

@@ -8,7 +8,7 @@ public class DeadlineCommand extends Command {
         this.time = time;
 
     }
-    public void execute(TaskList tasks, Ui ui, Storage storage){
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {
         tasks.add(new Deadline(content, time));
         ui.showAdd(tasks);
     }
