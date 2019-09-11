@@ -1,5 +1,9 @@
-T | 1 |  read book
-D | 1 |  return book | June 6th
-T | 1 |  sjdkfl
-E | 0 |  sdkf | sdkf
-T | 0 |  skdf
+T | 1 | read book
+D | 1 | return book | June 6th
+T | 1 | borrow book
+E | 1 | java class | June 7th
+T | 0 | learn java
+T | 0 | study
+T | 0 | play
+E | 0 | oop class | sep 6th
+D | 0 | oop lab 1 | sep 6th 1pm
